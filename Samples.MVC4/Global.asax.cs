@@ -1,14 +1,15 @@
-﻿using System;
+﻿using StackExchange.Exceptional;
+using StackExchange.Exceptional.Stores;
+using System;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using StackExchange.Exceptional;
 
 namespace Samples.MVC4
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
+    // Note: For instructions on enabling IIS6 or IIS7 classic mode,
     // visit http://go.microsoft.com/?LinkId=9394801
 
     public class MvcApplication : HttpApplication
@@ -22,7 +23,7 @@ namespace Samples.MVC4
             // JSON example
             //ErrorStore.Setup("My Error Log Name", new JSONErrorStore(path: "~/Errors"));
             // SQL Example
-            //ErrorStore.Setup("My Error Log Name", new SQLErrorStore(connectionString: "Data Source=.;Initial Catalog=Exceptions;Integrated Security=SSPI;"));
+            ErrorStore.Setup("Samples.MVC4", new SQLErrorStore(connectionString: "Data Source=localhost;Initial Catalog=Exceptions;USER ID=sa;Password=123456"));
 
             // Optionally add custom data to any logged exception (visible on the exception detail page):
             ErrorStore.GetCustomData = (exception, context, data) =>
@@ -64,7 +65,7 @@ namespace Samples.MVC4
         /// <param name="e">The exception to log</param>
         public static void LogException(Exception e)
         {
-            // Note: When dealing with non-web applications, or logging from background threads, 
+            // Note: When dealing with non-web applications, or logging from background threads,
             // you would pass, null in instead of a HttpContext object.
             ErrorStore.LogException(e, HttpContext.Current);
         }
